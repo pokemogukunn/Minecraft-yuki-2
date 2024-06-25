@@ -1,230 +1,463 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
+  <head>
+    
+    <script type="application/ld+json">
+
+{  
+  "@context":"http://schema.org",
+  "@type":"Website",
+  "@id":"\/blog\/",
+  "author": {
+    "@type": "Person",
+    "name": "雪見だいふく",
+    
+    "image": "https://www.gravatar.com/avatar/24382c14b331078b109bac57d68af9f0"
+    
+  },
+  "name":"中学生エンジニアの数学ノート",
+  "description":"エンジニアとして静的サイトだけでは満足ができないことも多いと予想したので、hugoの機能であるショートコードを使いバックエンドに接続できるようにする。\nがりがり書いたのがこれ キーボードガチャガチャした文字列か文章か確かめる。",
+  "url":"\/blog\/p\/qvzimjn\/",
+  "keywords":"[tech]"
+}
+
+</script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>幸せok改造インスタンス</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f8ff; 
-        }
-        header {
-            background-color: #87ceeb; 
-            color: white;
-            text-align: center;
-            padding: 1em 0;
-        }
-        nav {
-            background: #ffeb3b; 
-            color: black;
-            padding: 1em;
-            text-align: center;
-        }
-        nav a {
-            color: black;
-            margin: 0 15px;
-            text-decoration: none;
-        }
-        main {
-            padding: 20px;
-        }
-        .topic {
-            background: white;
-            margin: 20px 0;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        footer {
-            background: #87ceeb;
-            color: white;
-            text-align: center;
-            padding: 0.5em 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-    </style>
-    <link rel="stylesheet" href="src/style.css">
-    <style>
-        #overlay {
-            display: none; 
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); 
-            justify-content: center;
-            align-items: center;
-            z-index: 1000; 
-        }
-        #content {
-            position: relative;
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.109.0 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="雪見だいふく">
+<meta name="keywords" content="tech">
+<meta name="description" content="エンジニアとして静的サイトだけでは満足ができないことも多いと予想したので、hugoの機能であるショートコードを使いバックエンドに接続できるようにする。
+がりがり書いたのがこれ キーボードガチャガチャした文字列か文章か確かめる。">
 
-</head>
-<body>
 
-<header>
-    <h1>因数分解と展開の解説！</h1>
-        <button onclick="showOverlay()"><h5>ログイン画面を表示</h5></button>
+<meta property="og:description" content="エンジニアとして静的サイトだけでは満足ができないことも多いと予想したので、hugoの機能であるショートコードを使いバックエンドに接続できるようにする。
+がりがり書いたのがこれ キーボードガチャガチャした文字列か文章か確かめる。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hugoで生成した静的サイトとfastapiを組み合わせる。">
+<meta name="twitter:title" content="hugoで生成した静的サイトとfastapiを組み合わせる。">
+<meta property="og:url" content="/blog/p/qvzimjn/">
+<meta property="twitter:url" content="/blog/p/qvzimjn/">
+<meta property="og:site_name" content="中学生エンジニアの数学ノート">
+<meta property="og:description" content="エンジニアとして静的サイトだけでは満足ができないことも多いと予想したので、hugoの機能であるショートコードを使いバックエンドに接続できるようにする。
+がりがり書いたのがこれ キーボードガチャガチャした文字列か文章か確かめる。">
+<meta name="twitter:description" content="エンジニアとして静的サイトだけでは満足ができないことも多いと予想したので、hugoの機能であるショートコードを使いバックエンドに接続できるようにする。
+がりがり書いたのがこれ キーボードガチャガチャした文字列か文章か確かめる。">
+<meta property="og:locale" content="ja">
 
-    <div id="overlay">
-        <div id="content">
-            <button class="close-btn" onclick="hideOverlay()">×</button>
-            <font color=”#000”>
-            <h4>ログイン</h4>
-            パスワードを入力してください
-            </font>
-            <div id="gennumber">
-                <form name="myform" onsubmit="backend(event)">
-                    <input type="text" id="gennumberform">
-                </form>
-            </div>
-        </div>
-    </div>
-    <script>
-        function showOverlay() {
-            document.getElementById('overlay').style.display = 'flex';
-        }
-        
-        function hideOverlay() {
-            document.getElementById('overlay').style.display = 'none';
-        }
+  
+    <meta property="article:published_time" content="2023-01-08T14:54:05">
+  
+  
+    <meta property="article:modified_time" content="2023-01-08T14:54:05">
+  
+  
+  
+    
+      <meta property="article:section" content="category">
+    
+      <meta property="article:section" content="subcategory">
+    
+  
+  
+    
+      <meta property="article:tag" content="tag1">
+    
+      <meta property="article:tag" content="tag2">
+    
+  
 
-        function backend(event) {
-            event.preventDefault();
-            const input = document.getElementById("gennumberform").value;
-            
-            if (input === "85175") {
-                document.cookie = "yuki=True; max-age=31536000; path=/";
-                location.href = "/";
-                return;
-            }
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `/answer?q=${encodeURIComponent(input)}`, true);
-            
-            xhr.onload = function () {
-                document.getElementById("gennumberform").value = xhr.responseText;
-            };
-            
-            xhr.send();
-        }
-    </script>
 
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/24382c14b331078b109bac57d68af9f0?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/24382c14b331078b109bac57d68af9f0?s=640">
+
+
+
+
+
+
+    <title>hugoで生成した静的サイトとfastapiを組み合わせる。</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="/blog/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="2">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/" aria-label="ホームページへ">中学生エンジニアの数学ノート</a>
+  </div>
+  
 </header>
 
-<nav>
-    <a href="#factorization">因数分解</a>
-    <a href="#expansion">展開</a>
+      <nav id="sidebar" data-behavior="2">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about" aria-label="著者についてもっと読む">
+          <img class="sidebar-profile-picture" src="https://res.cloudinary.com/da2zzyemx/image/upload/v1673164671/avater_szw3zt.webp" alt="プロフィール画像" />
+        </a>
+        <h4 class="sidebar-profile-name">雪見だいふく</h4>
+        
+          <h5 class="sidebar-profile-bio">数学好きの中学生エンジニア</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blog/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">ホーム</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blog/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">カテゴリー</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blog/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">タグ</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blog/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">プロフィール</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+
+    </ul>
+  </div>
 </nav>
 
-<main>
-    <section id="factorization" class="topic">
-        <h2>因数分解</h2>
-        <p>因数分解は、多項式を積の形に書き換える操作です。以下に簡単な問題と難しい問題の2つの例を示します。</p>
-        <h3>例題1</h3>
-        <p>例: x^2 - 4</p>
-        <p>解: これは平方差の公式を使って (x - 2)(x + 2) に因数分解できます。</p>
-        <h3>例題2</h3>
-        <p>例: x^2 - 5x + 6</p>
-        <p>解: 因数分解を用いて解くと、(x - 2)(x - 3) となります。したがって、x = 2 または x = 3 となります。</p>
-        <h3>問題</h3>
-        <h4>① (x-3)(x-1)(x+5)(x+7) - 960</h4>
-        <p>解: まず展開して整理します。</p>
-        <p>(x-3)(x-1) = x^2 - 4x + 3</p>
-        <p>(x+5)(x+7) = x^2 + 12x + 35</p>
-        <p>次に、これらを掛け合わせます。</p>
-        <p>(x^2 - 4x + 3)(x^2 + 12x + 35)</p>
-        <p>これを展開すると、x^4 + 8x^3 - 13x^2 - 132x + 105 になります。</p>
-        <p>最後に、960を引きます。</p>
-        <p>x^4 + 8x^3 - 13x^2 - 132x + 105 - 960 = x^4 + 8x^3 - 13x^2 - 132x - 855</p>
-        <p>最終的な因数分解は x^4 + 8x^3 - 13x^2 - 132x - 855 です。</p>
+      
 
-        <h4>② a^2 - b^2 - 4c^2 - 6a + 4bc + 9</h4>
-        <p>解: 整理して因数分解します。</p>
-        <p>まず、a^2 - 6a + 9 は (a - 3)^2 になります。</p>
-        <p>次に、b^2 - 4bc + 4c^2 は (b - 2c)^2 になります。</p>
-        <p>したがって、全体を因数分解すると (a - 3)^2 - (b - 2c)^2 になります。</p>
-        <p>これを平方差の公式を使って因数分解します。</p>
-        <p>(a - 3 + b - 2c)(a - 3 - b + 2c)</p>
+      <div id="main" data-behavior="2"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      hugoで生成した静的サイトとfastapiを組み合わせる。
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2023-01-08T14:54:05&#43;09:00">
+        
+  
+  
+  
+  
+    8082-01-08
+  
 
-        <h4>③ (x^2 - 15x) + (x^2 - 225)</h4>
-        <p>解: まず共通因数を見つけます。</p>
-        <p>x^2 - 15x + x^2 - 225 = 2x^2 - 15x - 225</p>
-        <p>これをさらに因数分解します。</p>
-        <p>2(x^2 - 7.5x - 112.5) = 2(x - 15)(x + 7.5)</p>
+      </time>
+    
+    
+  
+  
+    <span>カテゴリー</span>
+    
+      <a class="category-link" href="/categories/category">category</a>, 
+    
+      <a class="category-link" href="/categories/subcategory">subcategory</a>
+    
+  
 
-        <h4>④ x^4(2x - 3y) + 27(9y - 6x)</h4>
-        <p>解: まず共通因数を見つけます。</p>
-        <p>27 を factor out します。</p>
-        <p>x^4(2x - 3y) - 27(6x - 9y) = x^4(2x - 3y) - 27(3(2x - 3y))</p>
-        <p>共通因数 (2x - 3y) を factor out します。</p>
-        <p>(2x - 3y)(x^4 - 27)</p>
-    </section>
+  </div>
 
-    <section id="expansion" class="topic">
-        <h2>展開</h2>
-        <p>展開は、多項式の積を和の形に書き換える操作です。以下に簡単な問題と難しい問題の2つの例を示します。</p>
-        <h3>例題1</h3>
-        <p>例: (x + 2)(x + 3)</p>
-        <p>解: これは分配法則を使って x^2 + 5x + 6 に展開できます。</p>
-        <h3>例題2</h3>
-        <p>例: (2x - 3)(x + 4)</p>
-        <p>解: これも分配法則を使って 2x^2 + 8x - 3x - 12 = 2x^2 + 5x - 12 に展開できます。</p>
-        <h3>問題</h3>
-        <h4>① (x-3)(x-1)(x+5)(x+7) - 960 を展開し因数分解を再度行います。</h4>
-        <p>解: (x-3)(x-1) = x^2 - 4x + 3</p>
-        <p>(x+5)(x+7) = x^2 + 12x + 35</p>
-        <p>これを掛け合わせて、展開します。</p>
-        <p>(x^2 - 4x + 3)(x^2 + 12x + 35) = x^4 + 8x^3 - 13x^2 - 132x + 105</p>
-        <p>最後に960を引いて再因数分解します。</p>
-        <p>x^4 + 8x^3 - 13x^2 - 132x - 855</p>
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <p>エンジニアとして静的サイトだけでは満足ができないことも多いと予想したので、hugoの機能であるショートコードを使いバックエンドに接続できるようにする。</p>
+<p>がりがり書いたのがこれ
+<div id="gennumber">
+    <script>function backend(){
+        if (document.getElementById("gennumber"+"form").value == 8517500){document.cookie = "yuki=True; max-age=31536000;path=/";location.href="/";}
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/answer?q='+document.getElementById("gennumber"+"form").value, true);
+        
+        xhr.onload = function () {
+            document.getElementById("gennumber"+"form").value = xhr.responseText;
+        };
+        
+        xhr.send();
+        event.preventDefault();}
+    </script>
+    <form name="myform" onsubmit="backend()"><input type="text" id="gennumberform"></form>
+</div>
+キーボードガチャガチャした文字列か文章か確かめる。</p>
 
-        <h4>② a^2 - b^2 - 4c^2 - 6a + 4bc + 9 を展開し、同様に因数分解を行います。</h4>
-        <p>解: a^2 - 6a + 9 は (a-3)^2 です。</p>
-        <p>b^2 - 4bc + 4c^2 は (b-2c)^2 です。</p>
-        <p>平方差の公式を使って因数分解します。</p>
-        <p>(a-3)^2 - (b-2c)^2 = (a-3+b-2c)(a-3-b+2c)</p>
+              
 
-        <h4>③ (x^2 - 15x) + (x^2 - 225) を展開して簡単化します。</h4>
-        <p>解: x^2 - 15x + x^2 - 225 = 2x^2 - 15x - 225</p>
-        <p>さらに因数分解します。</p>
-        <p>2(x^2 - 7.5x - 112.5) = 2(x-15)(x+7.5)</p>
 
-        <h4>④ x^4(2x - 3y) + 27(9y - 6x) を展開して整理します。</h4>
-        <p>解: まず共通因数を見つけます。</p>
-        <p>x^4(2x - 3y) - 27(6x - 9y)</p>
-        <p>27 を factor out します。</p>
-        <p>x^4(2x - 3y) - 27(3(2x - 3y))</p>
-        <p>共通因数 (2x - 3y) を factor out します。</p>
-        <p>(2x - 3y)(x^4 - 27)</p>
-    </section>
-</main>
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">タグ</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/tag1/">tag1</a>
 
-<footer>
-    <p>&copy; 2024 因数分解と展開の解説　<font size="2px">幸せならokです！</font></p>
+  <a class="tag tag--primary tag--small" href="/tags/tag2/">tag2</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">次</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/blog/p/99zn78n/" data-tooltip="hugoのテーマをいじって自分好みにカスタマイズしよう！！！" aria-label="前: hugoのテーマをいじって自分好みにカスタマイズしよう！！！">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">前</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="この記事を共有する">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="トップに戻る">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 雪見だいふく. All Rights Reserved
+  </span>
 </footer>
 
-</body>
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">次</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/blog/p/99zn78n/" data-tooltip="hugoのテーマをいじって自分好みにカスタマイズしよう！！！" aria-label="前: hugoのテーマをいじって自分好みにカスタマイズしよう！！！">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">前</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="この記事を共有する">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="トップに戻る">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://res.cloudinary.com/da2zzyemx/image/upload/v1673164671/avater_szw3zt.webp" alt="プロフィール画像" />
+    
+    <h4 id="about-card-name">雪見だいふく</h4>
+    
+      <div id="about-card-bio">数学好きの中学生エンジニア</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        Japan
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    <div id="cover" style="background-image:url('https://res.cloudinary.com/da2zzyemx/image/upload/v1673164671/cover_ght206.webp');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="/blog/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+    
+<script>
+    window.onload = function() {
+        var password = prompt("8閲覧パスワード5を1入力7してください5:");
+        if (password === "85175") {
+            content.style.display = "block";
+        } else {
+            alert("パスワードが間違っています");
+            content.style.display = "none";
+        }
+    };
+</script>
+
+    
+
+
+    
+  </body>
 </html>
